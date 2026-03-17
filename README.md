@@ -64,8 +64,3 @@ When a new email arrives:
 | DeepSeek R1 (free) | Review & format the reply |
 
 ---
-
-## 💡 Real-World Use Case
-The test email in the JSON is from an Italian customer named **Davide** asking a tech store about opening hours, technical support, delivery options, discounts, payment methods, etc. — the bot would automatically reply with accurate info pulled from the store's documents, without any human touching it.
-
-This is essentially a **RAG-powered (Retrieval Augmented Generation) customer support bot** built entirely in n8n. Very similar in architecture to the email auto-responder you've built before, but with the added Qdrant knowledge base layer.
