@@ -1,0 +1,115 @@
+## 🤖 Company RAG Knowledge Base Chatbot
+
+This is a **smart Telegram chatbot** that answers questions about your company by reading your own documents — like having an AI employee who has read every file in your Google Drive and can answer questions about them instantly.
+
+---
+
+## 🗂️ The Big Picture — 3 Separate Parts
+
+```
+PART 1: 📁 New file added to Drive    → learns it
+PART 2: ✏️ File updated in Drive      → relearns it  
+PART 3: 💬 Someone asks on Telegram   → answers it
+```
+
+---
+
+## 📁 PART 1 — Teaching the Bot (New File)
+
+```
+New file added to Google Drive folder
+        ↓
+Save the file ID
+        ↓
+Download the file
+        ↓
+Extract all text from it
+        ↓
+Convert text → AI embeddings (OpenAI)
+        ↓
+Store in Supabase vector database ✅
+```
+
+Think of this like the bot **reading and memorizing** a new document the moment it's uploaded.
+
+---
+
+## ✏️ PART 2 — Updating What the Bot Knows (File Updated)
+
+```
+Existing file is edited in Google Drive
+        ↓
+Delete OLD version from Supabase database
+        ↓
+Download the NEW version
+        ↓
+Extract text → Convert to embeddings
+        ↓
+Store fresh version in Supabase ✅
+```
+
+This keeps the bot's knowledge **always up to date**. If you change a policy doc, the bot forgets the old version and learns the new one.
+
+---
+
+## 💬 PART 3 — Answering Questions on Telegram
+
+```
+User sends message on Telegram
+        ↓
+    Voice or Text?
+    ┌── 🎤 Voice ──→ Download audio → Transcribe with Whisper → Text
+    └── ⌨️ Text  ──→ Use directly
+        ↓
+RAG Agent searches Supabase for relevant docs
+        ↓
+GPT-4o reads the matching docs + writes answer
+        ↓
+📤 Send answer back on Telegram
+```
+
+---
+
+## 🧠 Key Technologies Explained Simply
+
+| Technology | What it does | Simple analogy |
+|---|---|---|
+| **Supabase** | Stores document chunks | Filing cabinet |
+| **OpenAI Embeddings** | Converts text to searchable math | Index at the back of a book |
+| **RAG Agent** | Finds relevant docs + answers | Librarian who finds the right page |
+| **GPT-4o** | Writes the final answer | The expert who reads the page and explains it |
+| **Whisper** | Converts voice to text | Stenographer |
+| **Window Buffer Memory** | Remembers conversation history | Short-term memory per user |
+
+---
+
+## 💡 Real Example of How It Works
+
+> You upload your company's **FAQ, pricing doc, and refund policy** to Google Drive.
+>
+> A customer messages your Telegram bot:
+> *"What's your refund policy for annual plans?"*
+>
+> The bot searches Supabase → finds the refund policy chunk → GPT-4o reads it → replies with the exact answer. No human needed. ✅
+
+---
+
+## ⚙️ What You Need to Use This
+
+- Telegram bot token
+- Google Drive folder (named `Marketing Ladder Knowledge Base`)
+- Supabase account with `pgvector` enabled
+- OpenAI API key (for GPT-4o, Whisper, and embeddings)
+
+---
+
+## 🔄 How It Differs From the Email Auto-Responder You Have
+
+| | Email Auto-Responder | This Chatbot |
+|---|---|---|
+| **Channel** | Email (IMAP/SMTP) | Telegram |
+| **Vector DB** | Qdrant | Supabase |
+| **Voice support** | ❌ | ✅ |
+| **Memory** | ❌ | ✅ per user |
+| **Knowledge update** | Manual | Auto on Drive change |
+
